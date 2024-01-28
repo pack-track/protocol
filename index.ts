@@ -48,8 +48,8 @@ export class Message {
 
 		const header = source.subarray(0, headerLength).toString();
 
-		if (!header.startsWith('ACTS ')) {
-			throw new Error('No ACTS header found in message');
+		if (!header.startsWith('PT ')) {
+			throw new Error('No PT header found in message');
 		}
 
 		const headerLines = header.split('\n');
@@ -109,7 +109,7 @@ export class Message {
 	}
 
 	toBuffer() {
-		let header = `ACTS ${this.route.join('/')}\n`;
+		let header = `PT ${this.route.join('/')}\n`;
 
 		for (let name in this.headers) {
 			const value = this.headers[name];
