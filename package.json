@@ -1,0 +1,7 @@
+{
+	"name": "@packtrack/protocol",
+	"version": "1.0.0",
+	"devDependencies": {
+		"@types/node": "^20.11.9"
+	}
+}
