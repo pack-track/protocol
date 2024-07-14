@@ -1,12 +1,13 @@
 # PT - Packtrack Protocol
 This protocol is used to exchange events and data between members in a packtrack network.
 
-Example message (␤ = \n):
+Example message:
 ```
-PT control/throttle/display␤
-speed: 0.52␤
-reversed␤
-stopped␤␤
+PT control/throttle/display
+speed: 0.52
+reversed
+stopped
+
 Hello, World!
 ```
 
