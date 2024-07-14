@@ -36,8 +36,8 @@ Open a pull request if you require a new name.
 Values with a `F` indicate flag values.
 
 ### General headers
-`vendor`: Indicates the vendor of an accessory
+- `vendor`: Indicates the vendor of an accessory
 
 ### Driving instructions
-`speed`: Speed values (0 - 100)
-`reverse` F: Reverse direction
+- `speed`: Speed values (0 - 100)
+- `reverse` F: Reverse direction
