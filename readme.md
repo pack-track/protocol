@@ -19,11 +19,12 @@ There is no leading or trailing `/`.
 For future extensions, parsers must ignore everything after the route.
 
 None or multiple headers follow, which may or may not have a value.
-A header name may contain lowercase latin letters, `-` and numbers.
+A unique header name may contain lowercase latin letters, `-` and numbers.
 The name is terminated by `: `, after which an arbritary text value may follow.
 The value may contain a `:`, the only illegal character is a `\n`.
 If no `:` is found, the value of the header is boolean `true`, indicating a flag.
 A header must end with a new line.
+Space may be limited on embedded devices, where a cap on header count may be set no smaller than 32.
 
 A body may be provided, which starts after the first `\n\n` found in the message.
 The body can contain text or binary data.

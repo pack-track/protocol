@@ -38,7 +38,7 @@ export class Message {
 			}
 		} catch {}
 	}
-	
+
 	private static readHeader(source: Buffer) {
 		const headerLength = source.indexOf('\n\n');
 
@@ -64,13 +64,24 @@ export class Message {
 		const headers = {};
 
 		for (let headerLine of headerLines) {
+			let name;
+			let value;
+
 			if (headerLine.includes(':')) {
 				const parts = headerLine.split(': ');
 
-				headers[parts.shift()!] = parts.join(': ');
+				name = parts.shift()!;
+				value = parts.join(': ');
 			} else {
-				headers[headerLine] = true;
+				name = headerLine;
+				value = true;
 			}
+
+			if (name in headers) {
+				throw new Error('Duplicate header in message');
+			}
+
+			headers[name] = value;
 		}
 
 		return {
