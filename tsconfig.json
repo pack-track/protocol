@@ -6,6 +6,6 @@
 		"target": "es6"
 	},
 	"include": [
-		"source"
+		"index.ts"
 	]
 }

@@ -1,10 +1,12 @@
+import { PackTrackValue } from "./value";
+
 export class Message {
 	static readonly routeIdentifierName = /^[a-z\-0-9]+$/;
 	static readonly headerIdentifierName = /^[a-z\-0-9]+$/;
 
 	constructor(
 		public route: string[],
-		public headers: Record<string, string | boolean> = {},
+		public headers: Record<string, PackTrackValue> = {},
 		public body?: Buffer
 	) {
 		for (let routePart of route) {
@@ -14,8 +16,14 @@ export class Message {
 		}
 
 		for (let name in headers) {
+			const headerValue = headers[name];
+
 			if (!Message.headerIdentifierName.test(name)) {
 				throw new Error('Invalid header name');
+			}
+
+			if (typeof headerValue == 'object' && 'toPackTrackMessage' in headerValue) {
+				this.headers[name] = headerValue.toPackTrackValue();
 			}
 		}
 
@@ -25,12 +33,25 @@ export class Message {
 		}
 	}
 
+	static dispatch(before: Buffer, next: Buffer, handler: (message: Message) => void): Buffer {
+		const source = Buffer.concat([before, next]);
+		const message = this.readFirst(source);
+
+		if (message) {
+			handler(message.message);
+
+			return this.dispatch(source.subarray(message.nextStart), Buffer.from([]), handler);
+		}
+
+		return source;
+	}
+
 	static readFirst(source: Buffer) {
 		try {
 			const header = this.readHeader(source);
-			const length = header.headers['length'] ?? 0;
+			const length = +(header.headers['length'] ?? 0);
 
-			if (length == source.length - header.dataStart) {
+			if (length <= source.length - header.dataStart) {
 				return {
 					message: new Message(header.route, header.headers, source.subarray(header.dataStart, header.dataStart + length)),
 					nextStart: header.dataStart + length
@@ -128,7 +149,7 @@ export class Message {
 			if (value === true) {
 				header += `${name}\n`;
 			} else {
-				header += `${name}: ${value}`;
+				header += `${name}: ${value}\n`;
 			}
 		}
 

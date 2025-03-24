@@ -1,6 +1,8 @@
 # PT - Packtrack Protocol
 This protocol is used to exchange events and data between members in a packtrack network.
 
+Standardized messages are defined in source/messages
+
 Example message:
 ```
 PT control/throttle/display
@@ -28,17 +30,3 @@ Space may be limited on embedded devices, where a cap on header count may be set
 
 A body may be provided, which starts after the first `\n\n` found in the message.
 The body can contain text or binary data.
-
-## Standardized Header Names
-Each header must be named after one of the values in the following list.
-This is not enforced in code, but serves as a measure to prevent conflicting, duplicate or confusing header names.
-Open a pull request if you require a new name.
-
-Values with a `F` indicate flag values.
-
-### General headers
-- `vendor`: Indicates the vendor of an accessory
-
-### Driving instructions
-- `speed`: Speed values (0 - 100)
-- `reverse` F: Reverse direction
