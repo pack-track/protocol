@@ -11,6 +11,7 @@ import { ThrottleEmergencyMessage } from "./throttle/emergency";
 import { ThrottleButtonLightMessage } from "./throttle/button/light";
 import { ThrottleButtonPressMessage } from "./throttle/button/press";
 import { ThrottleTachometerMessage } from "./throttle/tachometer";
+import { TypedMessage } from ".";
 
 // all standardized message types
 export const messageTypes = [
@@ -31,10 +32,10 @@ export const messageTypes = [
 	ThrottleButtonPressMessage
 ];
 
-export const findMessageType = (message: Message) => {
+export const findMessageType = (message: Message): typeof TypedMessage => {
 	for (let type of messageTypes) {
 		if (message.routes(...type.route)) {
-			return type;
+			return type as typeof TypedMessage;
 		}
 	}
 }
