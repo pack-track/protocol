@@ -1,9 +1,12 @@
 {
 	"compilerOptions": {
-		"outDir": ".built",
-		"module": "esnext",
-		"moduleResolution": "node",
 		"target": "esnext",
-		"declaration": true
+		"module": "esnext",
+		"outDir": ".built",
+		"moduleResolution": "bundler",
+		"declaration": true,
+		"lib": [
+			"esnext"
+		]
 	}
 }
