@@ -15,3 +15,4 @@ export * from './source/messages/throttle/emergency';
 export * from './source/messages/throttle/tachometer';
 export * from './source/messages/throttle/button/light';
 export * from './source/messages/throttle/button/press';
+export * from './source/messages/train/speed/permit';
