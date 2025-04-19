@@ -6,6 +6,8 @@ export class ThrottleSpeedMessage extends TypedMessage {
 	constructor(
 		public speed: number
 	) {
-		super({});
+		super({
+			speed
+		});
 	}
 }
