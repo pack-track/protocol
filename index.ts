@@ -12,6 +12,7 @@ export * from './source/messages/monitor/train/position';
 export * from './source/messages/monitor/train/speed-permit';
 export * from './source/messages/throttle/speed';
 export * from './source/messages/throttle/emergency';
+export * from './source/messages/throttle/lock';
 export * from './source/messages/throttle/tachometer';
 export * from './source/messages/throttle/button/light';
 export * from './source/messages/throttle/button/press';

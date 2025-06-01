@@ -13,6 +13,7 @@ import { ThrottleButtonPressMessage } from "./throttle/button/press";
 import { ThrottleTachometerMessage } from "./throttle/tachometer";
 import { TypedMessage } from ".";
 import { TrainSpeedPermit } from "./train/speed/permit";
+import { ThrottleLockMessage } from "./throttle/lock";
 
 // all standardized message types
 export const messageTypes = [
@@ -28,6 +29,7 @@ export const messageTypes = [
 
 	ThrottleSpeedMessage,
 	ThrottleEmergencyMessage,
+	ThrottleLockMessage,
 	ThrottleTachometerMessage,
 	ThrottleButtonLightMessage,
 	ThrottleButtonPressMessage,
