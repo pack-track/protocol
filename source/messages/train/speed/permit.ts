@@ -5,11 +5,13 @@ export class TrainSpeedPermit extends TypedMessage {
 
 	constructor(
 		public speed: number,
-		public issued: string
+		public issued: string,
+		public channel: string
 	) {
 		super({
 			speed,
-			issued
+			issued,
+			channel
 		});
 	}
 }
