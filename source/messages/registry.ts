@@ -14,6 +14,8 @@ import { ThrottleTachometerMessage } from "./throttle/tachometer";
 import { TypedMessage } from ".";
 import { TrainSpeedPermit } from "./train/speed/permit";
 import { ThrottleLockMessage } from "./throttle/lock";
+import { RouteLockMessage } from "./route/lock";
+import { RouteLockedMessage } from "./route/locked";
 
 // all standardized message types
 export const messageTypes = [
@@ -22,6 +24,9 @@ export const messageTypes = [
 
 	PointerHitMessage,
 	PointerOutMessage,
+
+	RouteLockMessage,
+	RouteLockedMessage,
 
 	MonitorRouteMessage,
 	MonitorTrainPositionMessage,

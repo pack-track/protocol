@@ -7,6 +7,8 @@ export * from './source/messages/login';
 export * from './source/messages/connect';
 export * from './source/messages/pointer/hit';
 export * from './source/messages/pointer/out';
+export * from './source/messages/route/lock';
+export * from './source/messages/route/locked';
 export * from './source/messages/monitor/route';
 export * from './source/messages/monitor/train/position';
 export * from './source/messages/monitor/train/speed-permit';
