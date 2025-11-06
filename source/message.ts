@@ -79,7 +79,7 @@ export class Message {
 			}
 		}
 
-		if (headerLength == headerLength + 1) {
+		if (headerLength + 1 >= source.byteLength) {
 			throw new Error('Unterminated header in message');
 		}
 
