@@ -22,7 +22,7 @@ export class Message {
 				throw new Error('Invalid header name');
 			}
 
-			if (typeof headerValue == 'object' && 'toPackTrackMessage' in headerValue) {
+			if (typeof headerValue == 'object' && headerValue !== null && 'toPackTrackMessage' in headerValue) {
 				this.headers[name] = headerValue.toPackTrackValue();
 			}
 		}
