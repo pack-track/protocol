@@ -6,6 +6,8 @@ export class PointerHitMessage extends TypedMessage {
 	constructor(
 		public channel = 'any'
 	) {
-		super({});
+		super({
+			channel
+		});
 	}
 }

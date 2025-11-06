@@ -6,6 +6,8 @@ export class PointerOutMessage extends TypedMessage {
 	constructor(
 		public channel = 'any'
 	) {
-		super({});
+		super({
+			channel
+		});
 	}
 }
