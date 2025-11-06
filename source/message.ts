@@ -7,7 +7,7 @@ export class Message {
 	constructor(
 		public route: string[],
 		public headers: Record<string, PackTrackValue> = {},
-		public body?: Buffer
+		public body?: Uint8Array
 	) {
 		for (let routePart of route) {
 			if (!Message.routeIdentifierName.test(routePart)) {
@@ -28,42 +28,58 @@ export class Message {
 		}
 
 		// remove empty bodies
-		if (body?.length == 0) {
+		if (body?.byteLength == 0) {
 			this.body = null;
 		}
 	}
 
-	static dispatch(before: Buffer, next: Buffer, handler: (message: Message) => void): Buffer {
-		const source = Buffer.concat([before, next]);
+	static dispatch(before: Uint8Array, next: Uint8Array, handler: (message: Message) => void): Uint8Array {
+		const source = new Uint8Array(before.byteLength + next.byteLength);
+		source.set(new Uint8Array(before));
+		source.set(new Uint8Array(next), before.byteLength);
+
 		const message = this.readFirst(source);
 
 		if (message) {
 			handler(message.message);
 
-			return this.dispatch(source.subarray(message.nextStart), Buffer.from([]), handler);
+			return this.dispatch(source.subarray(message.nextStart), new Uint8Array(0), handler);
 		}
 
 		return source;
 	}
 
-	static readFirst(source: Buffer) {
+	static readFirst(source: Uint8Array) {
+		const sourceView = new Uint8Array(source);
+
 		try {
-			const header = this.readHeader(source);
+			const header = this.readHeader(sourceView);
 			const length = +(header.headers['length'] ?? 0);
 
-			if (length <= source.length - header.dataStart) {
+			if (length <= sourceView.byteLength - header.dataStart) {
 				return {
-					message: new Message(header.route, header.headers, source.subarray(header.dataStart, header.dataStart + length)),
+					message: new Message(
+						header.route,
+						header.headers,
+						sourceView.subarray(header.dataStart, header.dataStart + length)
+					),
+
 					nextStart: header.dataStart + length
 				};
 			}
 		} catch {}
 	}
 
-	private static readHeader(source: Buffer) {
-		const headerLength = source.indexOf('\n\n');
+	private static readHeader(source: Uint8Array) {
+		let headerLength = 0;
 
-		if (headerLength == -1) {
+		for (; headerLength + 1 < source.byteLength; headerLength++) {
+			if (source[headerLength] == 0x0a && source[headerLength + 1] == 0x0a) {
+				break;
+			}
+		}
+
+		if (headerLength == headerLength + 1) {
 			throw new Error('Unterminated header in message');
 		}
 
@@ -112,14 +128,14 @@ export class Message {
 		};
 	}
 
-	static from(source: Buffer) {
+	static from(source: Uint8Array) {
 		const data = this.readFirst(source);
 
 		if (!data) {
 			throw new Error('Message incomplete');
 		}
 
-		if (data.nextStart != source.length) {
+		if (data.nextStart != source.byteLength) {
 			throw new Error('Multiple messages passed');
 		}
 
@@ -140,6 +156,9 @@ export class Message {
 		return true;
 	}
 
+	// generates a buffer to send over the network
+	//
+	// node only
 	toBuffer() {
 		let header = `PT ${this.route.join('/')}\n`;
 
@@ -156,7 +175,7 @@ export class Message {
 		header += '\n';
 
 		if (this.body) {
-			return Buffer.concat([Buffer.from(header), this.body]);
+			return Buffer.concat([Buffer.from(header), Buffer.from(this.body)]);
 		}
 
 		return Buffer.from(header);
