@@ -1,5 +1,6 @@
 # PT - Packtrack Protocol
 This protocol is used to exchange events and data between members in a packtrack network.
+UTF-8 is used for encoding and decoding of text.
 
 Standardized messages are defined in source/messages
 

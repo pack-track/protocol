@@ -4,6 +4,8 @@ export class Message {
 	static readonly routeIdentifierName = /^[a-z\-0-9]+$/;
 	static readonly headerIdentifierName = /^[a-z\-0-9]+$/;
 
+	private static decoder = new TextDecoder('utf-8');
+
 	constructor(
 		public route: string[],
 		public headers: Record<string, PackTrackValue> = {},
@@ -83,7 +85,7 @@ export class Message {
 			throw new Error('Unterminated header in message');
 		}
 
-		const header = source.subarray(0, headerLength).toString();
+		const header = this.decoder.decode(source.subarray(0, headerLength));
 
 		if (!header.startsWith('PT ')) {
 			throw new Error('No PT header found in message');
